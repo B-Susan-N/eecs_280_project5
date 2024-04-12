@@ -138,12 +138,10 @@ public:
   //           the value true.
   std::pair<Iterator, bool> insert(const Pair_type &val) {
     auto finding = find(val.first);
-    if(!(finding == bst.end)){
+    if(finding == bst.end()){
+      return {bst.insert(val), true};
+    } else {
       return {finding, false};
-      return {bst.insert(val), true};
-    } 
-    else { //to newly inserted
-      return {bst.insert(val), true};
     }
   }
 

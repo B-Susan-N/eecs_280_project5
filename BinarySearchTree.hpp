@@ -364,10 +364,10 @@ private:
     int height_left = height_impl(node->left);
 
     if (height_right < height_left){
-      return 1 + left_height;
+      return 1 + height_left;
     } 
     else {
-      return 1 + right_height;
+      return 1 + height_right;
     }
   }
 
@@ -382,7 +382,7 @@ private:
     }
     Node *same_node = new Node;
     same_node->datum = node->datum;
-    copy_node->right = copy_nodes_impl(node->right);
+    same_node->right = copy_nodes_impl(node->right);
     same_node->left = copy_nodes_impl(node->left);
     return same_node;
   }
@@ -514,31 +514,32 @@ private:
   //          rooted at 'node'.
   // NOTE:    This function must be tree recursive.
   static bool check_sorting_invariant_impl(const Node *node, Compare less) {
-    //base case single node
-    if (node->left == nullptr && node->right == nullptr) {
-      return true;
-    }
+    
     //base case empty
     if (!node){
       return true;
     }
-
-     if(node->right){
-      if(less(node->right->datum, node->datum)){
-        return false;
-      }
-    } 
+    //base case single node
+    if (node->left == nullptr && node->right == nullptr) {
+      return true;
+    }
 
     if(node->left){
       if(less(node->datum, node->left->datum)){
         return false;
       }
     }
+    if(node->right){
+      if(less(node->right->datum, node->datum)){
+        return false;
+      }
+    } 
+
     Node *left_hand = node->left;
     Node *right_hand = node->right;
     bool right_sorted = check_sorting_invariant_impl(right_hand, less);
     bool left_sorted = check_sorting_invariant_impl(left_hand, less);
-    return right_sorted && left_sorted;
+    return left_sorted && right_sorted;
   }
 
   // EFFECTS : Traverses the tree rooted at 'node' using an in-order traversal,
@@ -593,11 +594,11 @@ private:
      }
     else if(less(val, node->datum)){
       Node *left_greater = min_greater_than_impl(node->left, val, less);
-      if (!left_greater) { 
-        return node;
+      if (left_greater) { 
+        return left_greater;
       } 
       else {
-        return left_greater;
+        return node;
       }
     }
     return min_greater_than_impl(node->right, val, less);
