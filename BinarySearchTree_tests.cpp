@@ -30,6 +30,7 @@ TEST(empty) {
  ASSERT_EQUAL(bst.size(), 0);
  ASSERT_EQUAL(bst.height(), 0);
 }
+//empty with destroy node
 TEST(one_node) {
 BinarySearchTree<int> bst2;
  bst2.insert(8);
