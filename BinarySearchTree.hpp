@@ -346,9 +346,7 @@ private:
     if (!node){
       return 0;
     }
-    int size_right = size_impl(node->right);
-    int size_left = size_impl(node->left);
-    return 1 + size_right + size_left;
+    return 1 + size_impl(node->left) +  size_impl(node->right);
   }
 
   // EFFECTS: Returns the height of the tree rooted at 'node', which is the
@@ -479,15 +477,9 @@ private:
   //       structure, and where the smallest element lives.
   static Node * min_element_impl(Node *node) {
     //base case empty
-    if (!node) {
-      return nullptr;
-    }
-
-    // single node
-    if (node->left == nullptr){
+    if (node == nullptr || node->left == nullptr) {
       return node;
     }
-
     return min_element_impl(node->left);
   }
 
@@ -497,14 +489,8 @@ private:
   // HINT: You don't need to compare any elements! Think about the
   //       structure, and where the largest element lives.
   static Node * max_element_impl(Node *node) {
-
     //base case empty
-    if (!node) {
-      return nullptr;
-    }
-
-    //single node
-    if (node->right == nullptr){
+    if (node == nullptr || node->right == nullptr) {
       return node;
     }
 
@@ -536,11 +522,8 @@ private:
         return false;
       }
     } 
-
-    Node *left_hand = node->left;
-    Node *right_hand = node->right;
-    bool right_sorted = check_sorting_invariant_impl(right_hand, less);
-    bool left_sorted = check_sorting_invariant_impl(left_hand, less);
+    bool right_sorted = check_sorting_invariant_impl(node->right, less);
+    bool left_sorted = check_sorting_invariant_impl(node->left, less);
     return left_sorted && right_sorted;
   }
 
@@ -596,7 +579,7 @@ private:
      }
     else if(less(val, node->datum)){
       Node *left_greater = min_greater_than_impl(node->left, val, less);
-      if (left_greater) { 
+      if (left_greater != nullptr) { 
         return left_greater;
       } 
       else {

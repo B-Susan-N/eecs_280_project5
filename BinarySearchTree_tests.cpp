@@ -31,9 +31,8 @@ TEST(empty_testing) {
  ASSERT_TRUE(bst.empty());
  ASSERT_EQUAL(bst.size(), 0);
  ASSERT_EQUAL(bst.height(), 0);
-
- //ASSERT_NOT_EQUAL(bst.max_element(), bst);
- //ASSERT_NOT_EQUAL(bst.min_element(), bst);
+ ASSERT_EQUAL(bst.max_element(), bst.end());
+ ASSERT_EQUAL(bst.min_element(), bst.end());
 }
 
 //empty with destroy node
@@ -52,8 +51,8 @@ BinarySearchTree<int> bst3;
  bst3.insert(12);
  bst3.insert(14);
  ASSERT_EQUAL(bst3.height(), 4u);
-
 }
+
 TEST(both_branches) {
  BinarySearchTree<int> bst4;
  bst4.insert(8);
@@ -74,6 +73,7 @@ TEST(test_min_greater_than){
     BinarySearchTree<int> bst;
     ASSERT_EQUAL(bst.min_greater_than(21), bst.end());
     ASSERT_EQUAL(bst.min_element(), bst.end());
+    ASSERT_EQUAL(bst.min_greater_than(21), bst.find(21));
 
     BinarySearchTree<int> bst2;
     bst2.insert(2);
@@ -83,8 +83,21 @@ TEST(test_min_greater_than){
     ASSERT_EQUAL(*bst2.begin(), 2);
     ASSERT_EQUAL(*bst2.end(), 6);
 
+    BinarySearchTree<int> bst3;
+    bst3.insert(88);
+    ASSERT_EQUAL(bst3.min_greater_than(80), bst3.find(88));
 }
 */
+
+TEST(test_find){
+    BinarySearchTree<int> bst_1;
+    bst_1.insert(1);
+    bst_1.insert(3);
+    bst_1.insert(8);
+    bst_1.insert(5);
+    bst_1.insert(11);
+    ASSERT_EQUAL(*(bst_1.find(8)), 8);
+}
 
 TEST(checking_sorting_invariant) {
     BinarySearchTree<int> bst;
@@ -100,15 +113,22 @@ TEST(checking_sorting_invariant) {
     bst3.insert(35); 
     bst3.insert(15); 
     ASSERT_TRUE(bst3.check_sorting_invariant());
-/*
-BinarySearchTree<int> bst4;
+
+    BinarySearchTree<int> bst4;
     bst4.insert(20);
-    bst4.insert(25);
-    bst4.insert(35); 
-    bst4.insert(15);
-    bst4.insert(15);
-    ASSERT_FALSE(bst4.check_sorting_invariant());
-*/
+    bst4.insert(21);
+    ASSERT_TRUE(bst4.check_sorting_invariant());
+
+    BinarySearchTree<int> b4;
+    b4.insert(20);
+    b4.insert(19);
+    ASSERT_TRUE(b4.check_sorting_invariant());
+
+    BinarySearchTree<int> bst5;
+    bst5.insert(20);
+    bst5.insert(22);
+    bst5.insert(21); 
+    ASSERT_TRUE(bst5.check_sorting_invariant());
     
     }
 
@@ -118,6 +138,19 @@ BinarySearchTree<int> bst4;
     ostringstream oss_bst;
     bst.traverse_inorder(oss_bst);
     ASSERT_EQUAL(oss_bst.str(), "");
+
+    BinarySearchTree<int> bst_2;
+    bst_2.insert(8);
+    bst_2.insert(7);
+    bst_2.insert(6);
+    bst_2.insert(5);
+    ostringstream oss_bst_2;
+    bst_2.traverse_inorder(oss_bst_2);
+    cout << oss_bst_2.str() << endl;
+    ASSERT_EQUAL(oss_bst_2.str(), "5 6 7 8 ");
+
+
+
 }
 TEST(traverse_preorder) {
  //empty tree 
@@ -125,6 +158,20 @@ TEST(traverse_preorder) {
     ostringstream oss_bst;
     bst.traverse_preorder(oss_bst);
     ASSERT_EQUAL(oss_bst.str(), "");
+
+    BinarySearchTree<int> bst_2;
+    ostringstream oss_bst_2;
+    bst_2.insert(45);
+    bst_2.insert(35);
+    bst_2.insert(30);
+    bst_2.insert(40);
+    bst_2.insert(20);
+    bst_2.insert(33);
+    bst_2.insert(55);
+    bst_2.traverse_preorder(oss_bst_2);
+    cout << oss_bst_2.str() << endl;
+    ASSERT_EQUAL(oss_bst_2.str(), "45 35 30 20 33 40 55 ");
+
 }
 
 

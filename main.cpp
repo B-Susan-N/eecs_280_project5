@@ -32,9 +32,6 @@ class Classifier {
    training_file(file_trained), 
    testing_file(file_tested), debug(mode_debugged) {}
 
-    // Destructor
-  ~Classifier() {}
-
    // EFFECTS: Return a set of unique whitespace delimited words.x
   //From specs
   set<string> unique_words(const string &str) {
@@ -49,10 +46,10 @@ class Classifier {
 
   //Training Section
   void training( ){
+        string word_bank;
         csvstream csvin(training_file);
         map<string, string> row;
-        string word_bank;
-
+        
         if(debug){
             cout << "training data:" << "\n";
         }
@@ -229,7 +226,7 @@ int main(int argc, char *argv[]){
 
     //for debugging
     if (argc == 3) {
-      Classifier c(first_file, second_file, 1);
+      Classifier c(first_file, second_file, 0);
       c.training();
     }
     if (argc == 4) {
