@@ -1,11 +1,12 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include "csvstream.hpp"
-#include <cmath>
 #include <map>
 #include <set>
+#include <cmath>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include "csvstream.hpp"
 using namespace std;
+
 class Classifier {
   private:
   int testing_post;
@@ -75,8 +76,8 @@ class Classifier {
         word_list = unique_words(word_bank);
         cout << "trained on " << training_post 
         << " examples" << endl;
+        cout << endl;
         if(debug) {
-         cout << endl;
          cout << "vocabulary size = " << 
          word_list.size() << endl;
          cout << endl;
@@ -84,7 +85,6 @@ class Classifier {
         debugging();
         cout << endl;
         }
-        cout << endl;
         testing_data();
     }
 
@@ -145,9 +145,9 @@ class Classifier {
   }
   void debugging(){
     cout << "classes:" << "\n";
-    for (const auto &value : label_count) {    
-        const auto &labeled = value.first;
-        const auto &examples = value.second;
+    for (const auto &kv : label_count) {    
+        const auto &labeled = kv.first;
+        const auto &examples = kv.second;
         cout << "  " << labeled << ", " << examples << 
         " examples, " 
         << "log-prior = " << prior(labeled) << endl;

@@ -1,7 +1,9 @@
 #include "BinarySearchTree.hpp"
 #include "unit_test_framework.hpp"
 #include <sstream>
+#include <string>
 
+using namespace std;
 
 TEST(assignment) {
     BinarySearchTree<int> bst;
@@ -24,12 +26,16 @@ TEST(test_copy){
     ASSERT_EQUAL(bst2.size(), 3u);
     ASSERT_EQUAL(*bst2.begin(), 2);
 }
-TEST(empty) {
+TEST(empty_testing) {
  BinarySearchTree<int> bst;
  ASSERT_TRUE(bst.empty());
  ASSERT_EQUAL(bst.size(), 0);
  ASSERT_EQUAL(bst.height(), 0);
+
+ //ASSERT_NOT_EQUAL(bst.max_element(), bst);
+ //ASSERT_NOT_EQUAL(bst.min_element(), bst);
 }
+
 //empty with destroy node
 TEST(one_node) {
 BinarySearchTree<int> bst2;
@@ -61,8 +67,8 @@ TEST(both_branches) {
  ASSERT_EQUAL(bst4.size(), 7u);
  ASSERT_EQUAL(*(bst4.find(6)), 6)
  ASSERT_EQUAL(*bst4.min_element(), 2);
- ASSERT_EQUAL(*bst4.max_element(), 14);}
-
+ ASSERT_EQUAL(*bst4.max_element(), 14);
+ }
 /*
 TEST(test_min_greater_than){
     BinarySearchTree<int> bst;
@@ -88,18 +94,38 @@ TEST(checking_sorting_invariant) {
     bst2.insert(15);
     ASSERT_TRUE(bst2.check_sorting_invariant());
 
- BinarySearchTree<int> bst3;
+    BinarySearchTree<int> bst3;
     bst3.insert(20);
     bst3.insert(25);
-    bst3.insert(35);    
+    bst3.insert(35); 
+    bst3.insert(15); 
     ASSERT_TRUE(bst3.check_sorting_invariant());
+/*
+BinarySearchTree<int> bst4;
+    bst4.insert(20);
+    bst4.insert(25);
+    bst4.insert(35); 
+    bst4.insert(15);
+    bst4.insert(15);
+    ASSERT_FALSE(bst4.check_sorting_invariant());
+*/
+    
     }
-TEST(traverse_inorder) {
-    //error when calling osstringstream
-    assert(true);
+
+    TEST(traverse_inorder) {
+    //empty tree
+    BinarySearchTree<int> bst;
+    ostringstream oss_bst;
+    bst.traverse_inorder(oss_bst);
+    ASSERT_EQUAL(oss_bst.str(), "");
 }
 TEST(traverse_preorder) {
-  //error when calling osstringstream
-   assert(true);
+ //empty tree 
+    BinarySearchTree<int> bst;
+    ostringstream oss_bst;
+    bst.traverse_preorder(oss_bst);
+    ASSERT_EQUAL(oss_bst.str(), "");
 }
+
+
 TEST_MAIN()

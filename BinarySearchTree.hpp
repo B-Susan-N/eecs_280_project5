@@ -478,14 +478,14 @@ private:
   // HINT: You don't need to compare any elements! Think about the
   //       structure, and where the smallest element lives.
   static Node * min_element_impl(Node *node) {
-
-    //base case single node
-    if (node->left == nullptr){
-      return node;
-    }
     //base case empty
     if (!node) {
       return nullptr;
+    }
+
+    // single node
+    if (node->left == nullptr){
+      return node;
     }
 
     return min_element_impl(node->left);
@@ -497,13 +497,15 @@ private:
   // HINT: You don't need to compare any elements! Think about the
   //       structure, and where the largest element lives.
   static Node * max_element_impl(Node *node) {
-    //base case single node
-    if (node->right == nullptr){
-      return node;
-    }
+
     //base case empty
     if (!node) {
       return nullptr;
+    }
+
+    //single node
+    if (node->right == nullptr){
+      return node;
     }
 
     return max_element_impl(node->right);
