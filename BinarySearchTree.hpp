@@ -15,24 +15,21 @@
  * for the private static member functions as directed.
  */
 
+
 #include <cassert>  //assert
 #include <iostream> //ostream
 #include <functional> //less
-
 // You may add aditional libraries here if needed. You may use any
 // part of the STL except for containers.
-
 template <typename T,
           typename Compare=std::less<T> // default if argument isn't provided
          >
 class BinarySearchTree {
-
   // OVERVIEW: This class represents a binary search tree, storing
   // elements of type T. The Compare functor determines the ordering
   // between elements. The default is std::less<T>, which orders
   // according to the < operator on T. (For simplicity, we assume only
   // comparators that can be default constructed will be used.)
-
   // INVARIANTS: All these invariants must hold for valid implementations
   // of BinarySearchTree. The invariants may also be considered as an implicit
   // part of the REQUIRES clause for all member functions - your implementations
@@ -60,39 +57,29 @@ class BinarySearchTree {
   // Compare functor. Note that "greater than or equal to" and
   // "greater than" end up meaning the same thing when duplicates are
   // not allowed.
-
   // NOTE: Any operation you define must use RECURSION rather than iteration.
   //       You may NOT use any looping constructs.
-
 private:
-
   // A Node stores an element and pointers to its left and right children
   // DO NOT change this struct definition.
   struct Node {
-
     // Default constructor - does nothing
     Node() {}
-
     // Custom constructor provided for convenience
     Node(const T &datum_in, Node *left_in, Node *right_in)
             : datum(datum_in), left(left_in), right(right_in) { }
-
     T datum;
     Node *left;
     Node *right;
   };
-
 public:
-
   // Default constructor
   // (Note this will default construct the less comparator)
   BinarySearchTree()
     : root(nullptr) { }
-
   // Copy constructor
   BinarySearchTree(const BinarySearchTree &other)
     : root(copy_nodes_impl(other.root)) { }
-
   // Assignment operator
   BinarySearchTree &operator=(const BinarySearchTree &rhs) {
     if (this == &rhs) {
@@ -102,27 +89,22 @@ public:
     root = copy_nodes_impl(rhs.root);
     return *this;
   }
-
   // Destructor
   ~BinarySearchTree() {
     destroy_nodes_impl(root);
   }
-
   // EFFECTS: Returns whether this BinarySearchTree is empty.
   bool empty() const {
     return empty_impl(root);
   }
-
   // EFFECTS: Returns the height of the tree.
   size_t height() const {
     return static_cast<size_t>(height_impl(root));
   }
-
   // EFFECTS: Returns the number of elements in this BinarySearchTree.
   size_t size() const {
     return static_cast<size_t>(size_impl(root));
   }
-
   // EFFECTS: Traverses the tree using an in-order traversal,
   //          printing each element to os in turn. Each element is followed
   //          by a space (there will be an "extra" space at the end).
@@ -130,7 +112,6 @@ public:
   void traverse_inorder(std::ostream &os) const {
     traverse_inorder_impl(root, os);
   }
-
   // EFFECTS: Traverses the tree using a pre-order traversal,
   //          printing each element to os in turn. Each element is followed
   //          by a space (there will be an "extra" space at the end).
@@ -138,7 +119,6 @@ public:
   void traverse_preorder(std::ostream &os) const {
     traverse_preorder_impl(root, os);
   }
-
   // EFFECTS: Returns whether or not the sorting invariant holds on
   //          the root of this BinarySearchTree.
   //
@@ -146,18 +126,14 @@ public:
   bool check_sorting_invariant() const {
     return check_sorting_invariant_impl(root, less);
   }
-
   class Iterator {
     // OVERVIEW: Iterator interface for BinarySearchTree.
     //           Iterates over the elements in ascending order as defined
     //           by the sorted ordering of the BinarySearchTree.
-
     // Big Three for Iterator not needed
-
   public:
     Iterator()
       : root(nullptr), current_node(nullptr) {}
-
     // EFFECTS:  Returns the current element by reference.
     // WARNING:  Dereferencing an iterator returns an element from the tree
     //           by reference, which could be modified. It is the
@@ -168,7 +144,6 @@ public:
     T &operator*() const {
       return current_node->datum;
     }
-
     // EFFECTS:  Returns the current element by pointer.
     // WARNING:  Dereferencing an iterator returns an element from the tree
     //           by reference, which could be modified. It is the
@@ -185,7 +160,6 @@ public:
     T *operator->() const {
       return &current_node->datum;
     }
-
     // Prefix ++
     Iterator &operator++() {
       if (current_node->right) {
@@ -198,36 +172,27 @@ public:
       }
       return *this;
     }
-
     // Postfix ++ (implemented in terms of prefix ++)
     Iterator operator++(int) {
       Iterator result(*this);
       ++(*this);
       return result;
     }
-
     bool operator==(const Iterator &rhs) const {
       return current_node == rhs.current_node;
     }
-
     bool operator!=(const Iterator &rhs) const {
       return current_node != rhs.current_node;
     }
-
   private:
     friend class BinarySearchTree;
-
     Node *root;
     Node *current_node;
     Compare less;
-
     Iterator(Node *root_in, Node* current_node_in, Compare less_in)
       : root(root_in), current_node(current_node_in), less(less_in) { }
-
   }; // BinarySearchTree::Iterator
   ////////////////////////////////////////
-
-
   // EFFECTS : Returns an iterator to the first element
   //           in this BinarySearchTree.
   Iterator begin() const {
@@ -236,33 +201,26 @@ public:
     }
     return Iterator(root, min_element_impl(root), less);
   }
-
   // EFFECTS: Returns an iterator to past-the-end.
   Iterator end() const {
     return Iterator();
   }
-
-
   // EFFECTS: Returns an Iterator to the minimum element in this
   //          BinarySearchTree or an end Iterator if the tree is empty.
   Iterator min_element() const {
     return Iterator(root, min_element_impl(root), less);
   }
-
   // EFFECTS: Returns an Iterator to the maximum element in this
   //          BinarySearchTree or an end Iterator if the tree is empty.
   Iterator max_element() const {
     return Iterator(root, max_element_impl(root), less);
   }
-
   // EFFECTS: Returns an Iterator to the minimum element in this
   //          BinarySearchTree greater than the given value.
   //          If the tree is empty, returns an end Iterator.
   Iterator min_greater_than(const T &value) const {
     return Iterator(root, min_greater_than_impl(root, value, less), less);
   }
-
-
   // EFFECTS: Searches this tree for an element equivalent to query.
   //          Returns an iterator to the existing element if found,
   //          and an end iterator otherwise.
@@ -275,7 +233,6 @@ public:
   Iterator find(const T &query) const {
     return Iterator(root, find_impl(root, query, less), less);
   }
-
   // REQUIRES: The given item is not already contained in this BinarySearchTree
   // MODIFIES: this BinarySearchTree
   // EFFECTS : Inserts the element k into this BinarySearchTree, maintaining
@@ -285,38 +242,28 @@ public:
     root = insert_impl(root, item, less);
     return find(item);
   }
-
   // EFFECTS: Returns a human-readable string representation of this
   //          BinarySearchTree. Works best for small trees.
   //
   // NOTE: This member function is implemented for you in TreePrint.hpp.
   //       You may use it, but you don't need to worry about how it works.
   std::string to_string() const;
-
-
 private:
-
   // DATA REPRESENTATION
   // The root node of this BinarySearchTree.
   Node *root;
-
   // An instance of the Compare type. Use this to compare elements.
   Compare less;
-
     
   // NOTE: These member types are implemented for you in TreePrint.hpp.
   //       They support the to_string function. You do not have to do
   //       anything with them. DO NOT CHANGE.
   class Tree_grid_square;
   class Tree_grid;
-
   // NOTE: This member function is implemented for you in TreePrint.hpp.
   //       It supports the to_string function. You do not have to do
   //       anything with it. DO NOT CHANGE.
   int get_max_elt_width() const;
-
-
-
 // ---------- DO NOT CHANGE ANYTHING IN THIS FILE ABOVE THIS LINE ----------
 
 

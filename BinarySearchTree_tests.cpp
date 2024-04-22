@@ -68,8 +68,9 @@ TEST(both_branches) {
  ASSERT_EQUAL(*bst4.min_element(), 2);
  ASSERT_EQUAL(*bst4.max_element(), 14);
  }
-/*
+
 TEST(test_min_greater_than){
+
     BinarySearchTree<int> bst;
     ASSERT_EQUAL(bst.min_greater_than(21), bst.end());
     ASSERT_EQUAL(bst.min_element(), bst.end());
@@ -80,14 +81,14 @@ TEST(test_min_greater_than){
     bst2.insert(4);
     bst2.insert(6);
     ASSERT_EQUAL(*bst2.min_greater_than(2), 4);
-    ASSERT_EQUAL(*bst2.begin(), 2);
-    ASSERT_EQUAL(*bst2.end(), 6);
 
+    
+   
     BinarySearchTree<int> bst3;
     bst3.insert(88);
     ASSERT_EQUAL(bst3.min_greater_than(80), bst3.find(88));
 }
-*/
+
 
 TEST(test_find){
     BinarySearchTree<int> bst_1;
