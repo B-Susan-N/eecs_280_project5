@@ -41,6 +41,17 @@ TEST(bst_public_test) {
   cout << oss_inorder.str() << endl << endl;
   ASSERT_TRUE(oss_inorder.str() == "3 5 7 ");
 }
+TEST(check_sorting_invarian_2){
+   BinarySearchTree<int> b;
+   b.insert(6);
+   b.insert(5);
+   b.insert(10);
+   b.insert(15);
+// change first datum to 11, resulting in the first broken tree above
+   *b.begin() = 11;
+   ASSERT_FALSE(b.check_sorting_invariant());
+}
+
 
 TEST(assignment) {
     BinarySearchTree<int> bst;
